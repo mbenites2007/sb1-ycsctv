@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Estilos do Leaflet */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.leaflet-popup-content {
+  margin: 13px 19px;
+  line-height: 1.4;
+  min-width: 200px;
+}
+
+.leaflet-popup-content p {
+  margin: 18px 0;
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  padding: 16px;
+}
+
+/* Estilos adicionais para controles do mapa */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: white !important;
+  color: #4B5563 !important;
+  border: 1px solid #E5E7EB !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #F3F4F6 !important;
+  color: #1F2937 !important;
+}
+
+.leaflet-control-scale {
+  border: none !important;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2) !important;
+  padding: 4px 8px !important;
+  background-color: white !important;
+  border-radius: 4px !important;
+}
+
+.leaflet-control-layers {
+  border: none !important;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2) !important;
+  border-radius: 4px !important;
+}
+
+.leaflet-control-layers-toggle {
+  background-color: white !important;
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* Estilo para o controle de zoom por área */
+.leaflet-control-zoom-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.leaflet-control-zoom-box:hover {
+  background-color: #F3F4F6;
+}
+
+.leaflet-control-zoom-box.active {
+  background-color: #EEF2FF;
+  border-color: #6366F1;
+  color: #4F46E5;
+}
+
+/* Cursor personalizado para o box zoom */
+.leaflet-container.leaflet-crosshair {
+  cursor: crosshair;
+}
+
+/* Estilo para a área de seleção do box zoom */
+.leaflet-zoom-box {
+  border: 2px solid #4F46E5;
+  background-color: rgba(99, 102, 241, 0.1);
+  border-radius: 2px;
+}

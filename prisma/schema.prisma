@@ -1,0 +1,153 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          String   @id @default(uuid())
+  username    String   @unique
+  email       String   @unique
+  password    String
+  accessLevel String   @default("standard")
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Client {
+  id           String    @id @default(uuid())
+  name         String
+  document     String    @unique
+  email        String
+  phone        String
+  street       String
+  number       String
+  complement   String?
+  neighborhood String
+  city         String
+  state        String
+  zipCode      String
+  mayor        String?
+  party        String?
+  mayorPhone   String?
+  clientFactors ClientFactor[]
+  observations  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  orders       Order[]
+}
+
+model ClientFactor {
+  id          String   @id @default(uuid())
+  clientId    String
+  factorId    Int
+  subItemId   Int
+  client      Client   @relation(fields: [clientId], references: [id])
+  factor      Factor   @relation(fields: [factorId], references: [id])
+  factorSubItem FactorSubItem @relation(fields: [subItemId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([clientId, factorId])
+}
+
+model Service {
+  id          String       @id @default(uuid())
+  code        String      @unique
+  title       String
+  description String
+  unitPrice   Float
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  subServices SubService[]
+  orderItems  OrderItem[]
+}
+
+model SubService {
+  id          String    @id @default(uuid())
+  code        String    @unique
+  description String
+  unit        String
+  unitPrice   Float
+  serviceId   String
+  service     Service   @relation(fields: [serviceId], references: [id])
+  allowedFactors SubServiceFactor[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  orderItems  OrderItem[]
+}
+
+model SubServiceFactor {
+  id           String     @id @default(uuid())
+  subServiceId String
+  factorId     Int
+  subService   SubService @relation(fields: [subServiceId], references: [id])
+  factor       Factor     @relation(fields: [factorId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([subServiceId, factorId])
+}
+
+model Factor {
+  id          Int       @id @default(autoincrement())
+  code        Int       @unique @default(autoincrement())
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  subItems    FactorSubItem[]
+  clientFactors ClientFactor[]
+  subServices SubServiceFactor[]
+}
+
+model FactorSubItem {
+  id          Int       @id @default(autoincrement())
+  code        Int       @unique @default(autoincrement())
+  description String
+  value       Float
+  factorId    Int
+  factor      Factor    @relation(fields: [factorId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  orderItems  OrderItem[]
+  clientFactors ClientFactor[]
+}
+
+model Order {
+  id           String      @id @default(uuid())
+  code         String      @unique @default(uuid())
+  clientId     String
+  client       Client      @relation(fields: [clientId], references: [id])
+  date         DateTime
+  total        Float
+  status       String      @default("draft")
+  observations String?
+  items        OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model OrderItem {
+  id              String        @id @default(uuid())
+  orderId         String
+  order           Order         @relation(fields: [orderId], references: [id])
+  serviceId       String
+  service         Service       @relation(fields: [serviceId], references: [id])
+  subServiceId    String?
+  subService      SubService?   @relation(fields: [subServiceId], references: [id])
+  factorSubItemId Int?
+  factorSubItem   FactorSubItem? @relation(fields: [factorSubItemId], references: [id])
+  sequentialNumber String?
+  description     String?
+  unit            String?
+  quantity        Float
+  unitPrice       Float
+  total           Float
+  observations    String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
